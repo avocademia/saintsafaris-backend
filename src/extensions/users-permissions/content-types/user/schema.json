@@ -84,12 +84,6 @@
         "images"
       ]
     },
-    "reviews": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::review.review",
-      "mappedBy": "user"
-    },
     "dob": {
       "type": "date",
       "required": true

@@ -7,4 +7,9 @@ module.exports = ({ env }) => ({
   webhooks: {
     populateRelations: env.bool('WEBHOOKS_POPULATE_RELATIONS', false),
   },
+  logger: {
+    level: 'debug', // Log level
+    exposeInContext: true, // Makes the logger available in the context
+    requests: true, // Logs HTTP requests
+  },
 });

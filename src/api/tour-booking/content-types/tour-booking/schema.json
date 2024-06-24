@@ -1,0 +1,52 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tour_bookings",
+  "info": {
+    "singularName": "tour-booking",
+    "pluralName": "tour-bookings",
+    "displayName": "Tour Booking"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "tour": {
+      "type": "string",
+      "required": true
+    },
+    "first_name": {
+      "type": "string",
+      "required": true
+    },
+    "surname": {
+      "type": "string",
+      "required": true
+    },
+    "phone": {
+      "required": true,
+      "type": "biginteger"
+    },
+    "email": {
+      "type": "string",
+      "required": true
+    },
+    "adults": {
+      "type": "integer",
+      "required": true
+    },
+    "children": {
+      "type": "integer"
+    },
+    "city": {
+      "type": "string",
+      "required": true
+    },
+    "travel_date": {
+      "type": "date"
+    },
+    "message": {
+      "type": "text"
+    }
+  }
+}

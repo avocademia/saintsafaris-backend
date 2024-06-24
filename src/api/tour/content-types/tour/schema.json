@@ -61,12 +61,6 @@
       "type": "text",
       "required": true
     },
-    "reviews": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::review.review",
-      "mappedBy": "tour"
-    },
     "country": {
       "type": "string",
       "required": true
@@ -101,6 +95,12 @@
         "other"
       ],
       "required": true
+    },
+    "activities": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::activity.activity",
+      "mappedBy": "tours"
     }
   }
 }

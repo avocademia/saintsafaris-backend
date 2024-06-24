@@ -12,28 +12,30 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "tour": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::tour.tour",
-      "inversedBy": "reviews"
-    },
     "rating": {
       "type": "integer",
       "max": 5,
-      "min": 0,
       "required": true
     },
     "body": {
       "type": "text",
-      "required": true,
-      "maxLength": 200
+      "required": true
     },
-    "user": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "reviews"
+    "tourid": {
+      "required": true,
+      "type": "biginteger"
+    },
+    "first_name": {
+      "type": "string",
+      "required": true
+    },
+    "surname": {
+      "type": "string",
+      "required": true
+    },
+    "username": {
+      "type": "string",
+      "required": true
     }
   }
 }
