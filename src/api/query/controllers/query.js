@@ -17,8 +17,8 @@ module.exports = {
       });
   
       const notificationMsg = {
-        to: 'vizionbnm@gmail.com',
-        from: 'vizionbnm@gmail.com',
+        to: 'mail@saintsafaris.com',
+        from: 'mail@saintsafaris.com',
         subject: `New Query: ${subject}`,
         text: `Full Name: ${full_name}\nEmail: ${email}\nMessage: ${message}`,
       };

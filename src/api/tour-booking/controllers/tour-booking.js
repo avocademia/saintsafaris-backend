@@ -16,7 +16,7 @@ module.exports = {
   
       const confirmationMsg = {
         to: email,
-        from: 'vizionbnm@gmail.com',
+        from: 'mail@saintsafaris.com',
         subject: 'Booking Confirmation',
         text: `Hello ${first_name}, your booking has been received and is being processed.`,
       };
@@ -28,8 +28,8 @@ module.exports = {
       }
   
       const notificationMsg = {
-        to: 'vizionbnm@gmail.com',
-        from: 'vizionbnm@gmail.com',
+        to: 'mail@saintsafaris.com',
+        from: 'mail@saintsafaris.com',
         subject: 'New Booking Notification',
         text: `New booking received!\n\nFirst Name: ${first_name}\nSurname: ${surname}\nPhone: ${phone}\nEmail: ${email}\nAdults: ${adults}\nChildren: ${children}\nCity of Residence: ${city}\nDate of travel: ${travel_date}\nMessage: ${message}`,
       };
