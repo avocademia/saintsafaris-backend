@@ -4,9 +4,9 @@ module.exports = [
       path: '/get-user-token',
       handler: 'users-permissions.access-cookie.access.getAccessToken',
       config: {
-        policies: [], // Additional policies (if needed)
+        policies: [],
       },
     },
-    // Add more custom routes as needed
+
   ];
   
