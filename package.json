@@ -11,11 +11,11 @@
   },
   "dependencies": {
     "@apollographql/apollo-tools": "^0.5.4",
-    "@strapi/plugin-cloud": "4.21.1",
+    "@strapi/plugin-cloud": "4.25.15",
     "@strapi/plugin-i18n": "^4.15.0",
     "@strapi/plugin-users-permissions": "^4.15.0",
-    "@strapi/provider-email-sendgrid": "^4.23.0",
-    "@strapi/strapi": "4.21.1",
+    "@strapi/provider-email-sendgrid": "^5.3.0",
+    "@strapi/strapi": "^4.25.15",
     "mysql": "2.18.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
@@ -25,7 +25,7 @@
     "webpack-dev-middleware": "^7.1.0"
   },
   "author": {
-    "name": "A Strapi developer"
+    "name": "Jotham Ogeya Jami"
   },
   "strapi": {
     "uuid": "d24cbe17-e328-4ba5-83eb-ac18c2287f9f"
