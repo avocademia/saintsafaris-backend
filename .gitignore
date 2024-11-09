@@ -38,6 +38,7 @@ $RECYCLE.BIN/
 
 *.7z
 *.csv
+*.dat
 *.dmg
 *.gz
 *.iso
@@ -79,6 +80,8 @@ $RECYCLE.BIN/
 ssl
 .idea
 nbproject
+public/uploads/*
+!public/uploads/.gitkeep
 
 ############################
 # Node.js

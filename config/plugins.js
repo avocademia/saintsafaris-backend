@@ -3,7 +3,7 @@ module.exports = ({ env }) => ({
       enabled: true,
       config: {
         jwt: {
-          expiresIn: '120m',
+          expiresIn: '15m',
         },
       },
     },
@@ -14,8 +14,8 @@ module.exports = ({ env }) => ({
           apiKey: env('SENDGRID_API_KEY'),
         },
         settings: {
-          defaultFrom: 'mail@saintsafaris.com',
-          defaultReplyTo: 'mail@saintsafaris.com',
+          defaultFrom: 'vizionbnm@gmail.com',
+          defaultReplyTo: 'vizionbnm@gmail.com',
         },
       },
     },

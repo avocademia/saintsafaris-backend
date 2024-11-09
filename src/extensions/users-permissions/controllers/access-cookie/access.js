@@ -6,7 +6,7 @@ module.exports = {
 
     try {
 
-      const accessToken = ctx.cookies.get('jwt')
+      const accessToken = ctx.cookies.get('accessToken')
       ctx.send({ accessToken });
 
     } catch (error) {

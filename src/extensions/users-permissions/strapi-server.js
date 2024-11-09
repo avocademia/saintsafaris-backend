@@ -17,7 +17,6 @@
             return sanitize.contentAPI.output(user, userSchema, { auth });
         };
 
-        // issue a JWT
         const issueJWT = (payload, jwtOptions = {}) => {
             _.defaults(jwtOptions, strapi.config.get('plugin.users-permissions.jwt'));
             return jwt.sign(
@@ -27,7 +26,6 @@
             );
         }
     
-        // verify the refreshToken by using the REFRESH_SECRET from the .env
         const verifyRefreshToken = (token) => {
             return new Promise(function (resolve, reject) {
                 jwt.verify(token, process.env.REFRESH_SECRET, {}, function (
@@ -41,8 +39,7 @@
                 });
             });
         }
-    
-        // issue a Refresh token
+        
         const issueRefreshToken = (payload, jwtOptions = {}) => {
             _.defaults(jwtOptions, strapi.config.get('plugin.users-permissions.jwt'));
             return jwt.sign(
@@ -52,7 +49,6 @@
             );
         }
 
-    
         module.exports = (plugin) => {
             plugin.controllers.auth.callback = async (ctx) => {
                 const provider = ctx.params.provider || 'local';
@@ -66,7 +62,7 @@
                 if (provider === 'local') {
                     await validateCallbackBody(params);
                     const { identifier } = params;
-                    // Check if the user exists.
+
                     const user = await strapi.query('plugin::users-permissions.user').findOne({
                         where: {
                             provider,
@@ -85,19 +81,25 @@
                     );
                     if (!validPassword) {
                         throw new ValidationError('Invalid identifier or password');
-                      } else {
-                          ctx.cookies.set("refreshToken", issueRefreshToken({ id: user.id }), {
-                              httpOnly: true,
-                              secure: false,
-                              signed: true,
-                              overwrite: true,
-                      });
-                          ctx.send({
+                    } else {
+                        ctx.cookies.set("refreshToken", issueRefreshToken({ id: user.id }), {
+                            httpOnly: true,
+                            secure: false,
+                            signed: true,
+                            overwrite: true,
+                        });
+                        ctx.cookies.set('accessToken', issueJWT({id: user.id}), {
+                            httpOnly: true,
+                            secure: false,
+                            signed: true,
+                            overwrite: true
+                        });
+                        ctx.send({
                             status: 'Authenticated',
                             jwt: issueJWT({ id: user.id }, { expiresIn: process.env.JWT_SECRET_EXPIRES }),
                             user: await sanitizeUser(user, ctx),
-                          });
-                      }
+                        });
+                    }
                     const advancedSettings = await store.get({ key: 'advanced' });
                     const requiresConfirmation = _.get(advancedSettings, 'email_confirmation');
                     if (requiresConfirmation && user.confirmed !== true) {
@@ -106,20 +108,7 @@
                     if (user.blocked === true) {
                         throw new ApplicationError('Your account has been blocked by an administrator');
                     }
-                    return ctx.send({
-                        jwt: getService('jwt').issue({ id: user.id }),
-                        user: await sanitizeUser(user, ctx),
-                    });
-                }
-                // Connect the user with a third-party provider.
-                try {
-                    const user = await getService('providers').connect(provider, ctx.query);
-                    return ctx.send({
-                        jwt: getService('jwt').issue({ id: user.id }),
-                        user: await sanitizeUser(user, ctx),
-                    });
-                } catch (error) {
-                    throw new ApplicationError(error.message);
+    
                 }
             }
             plugin.controllers.auth['refreshToken'] = async (ctx) => {
@@ -160,9 +149,14 @@
                         signed: true,
                         overwrite: true,
                     });
+                    ctx.cookies.set('accessToken', issueJWT({id: user.id}), {
+                        httpOnly: true,
+                        secure: false,
+                        signed: true,
+                        overwrite: true
+                    })
                     ctx.send({
                         jwt: issueJWT({ id: obj.id }, { expiresIn: process.env.JWT_SECRET_EXPIRES }),
-                        refreshToken: refreshToken,
                     });
                 }
                 catch (err) {
