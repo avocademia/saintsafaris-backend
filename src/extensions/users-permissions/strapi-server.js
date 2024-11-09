@@ -59,6 +59,7 @@
                 if (!_.get(grantSettings, [grantProvider, 'enabled'])) {
                     throw new ApplicationError('This provider is disabled');
                 }
+                
                 if (provider === 'local') {
                     await validateCallbackBody(params);
                     const { identifier } = params;
