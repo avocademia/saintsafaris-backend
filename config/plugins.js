@@ -4,18 +4,7 @@ module.exports = ({ env }) => ({
       config: {
         jwt: {
           expiresIn: '15m',
-        },
-      },
-    },
-    email: {
-      config: {
-        provider: 'sendgrid',
-        providerOptions: {
-          apiKey: env('SENDGRID_API_KEY'),
-        },
-        settings: {
-          defaultFrom: 'vizionbnm@gmail.com',
-          defaultReplyTo: 'vizionbnm@gmail.com',
+          httpOnly: true
         },
       },
     },
