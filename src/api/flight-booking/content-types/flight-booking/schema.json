@@ -1,0 +1,81 @@
+{
+  "kind": "collectionType",
+  "collectionName": "flight_bookings",
+  "info": {
+    "singularName": "flight-booking",
+    "pluralName": "flight-bookings",
+    "displayName": "Flight Booking",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "client_title": {
+      "type": "string",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "phone_number": {
+      "type": "biginteger",
+      "required": true
+    },
+    "adults": {
+      "type": "integer",
+      "required": true,
+      "min": 1
+    },
+    "children": {
+      "type": "integer"
+    },
+    "infants": {
+      "type": "integer"
+    },
+    "depart_from": {
+      "type": "string",
+      "required": true
+    },
+    "departure_date": {
+      "type": "date",
+      "required": false
+    },
+    "trip_type": {
+      "type": "string",
+      "required": true
+    },
+    "destination": {
+      "type": "string"
+    },
+    "fulfilled": {
+      "type": "boolean",
+      "default": false
+    },
+    "cities": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::multi-city.multi-city",
+      "mappedBy": "booking"
+    },
+    "travellers": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::traveller.traveller",
+      "mappedBy": "booking"
+    },
+    "return_date": {
+      "type": "date"
+    },
+    "visa_assistance": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

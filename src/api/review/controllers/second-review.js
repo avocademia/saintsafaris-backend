@@ -14,14 +14,11 @@ module.exports = {
                         $eq: username
                     }
                 }
-            });
-            ctx.body = entities;
+            })
+            ctx.body = entities
 
         } catch (error) {
-
-            console.error(`Error occurred while fetching reviews: ${error.message}`)
             ctx.throw(500, 'An error occurred while fetching reviews')
-
         }
     },
-};
+}

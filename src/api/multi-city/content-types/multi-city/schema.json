@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "multi_cities",
+  "info": {
+    "singularName": "multi-city",
+    "pluralName": "multi-cities",
+    "displayName": "Multi City"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "booking": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::flight-booking.flight-booking",
+      "inversedBy": "cities"
+    },
+    "city": {
+      "type": "string",
+      "required": true
+    },
+    "departure_date": {
+      "type": "date"
+    }
+  }
+}

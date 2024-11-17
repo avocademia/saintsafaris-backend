@@ -1,5 +1,5 @@
-        // ../users-permissions/strapi-server.js
-    
+'use-strict'
+
         const utils = require('@strapi/utils');
         const { getService } = require('../users-permissions/utils');
         const jwt = require('jsonwebtoken');
@@ -25,30 +25,16 @@
                 jwtOptions
             );
         }
-    
-        const verifyRefreshToken = (token) => {
-            return new Promise(function (resolve, reject) {
-                jwt.verify(token, process.env.REFRESH_SECRET, {}, function (
-                    err,
-                    tokenPayload = {}
-                ) {
-                    if (err) {
-                        return reject(new Error('Invalid token.'));
-                    }
-                    resolve(tokenPayload);
-                });
-            });
-        }
-        
-        const issueRefreshToken = (payload, jwtOptions = {}) => {
-            _.defaults(jwtOptions, strapi.config.get('plugin.users-permissions.jwt'));
+
+        const issueRefreshToken = (userId) => {
             return jwt.sign(
-                _.clone(payload.toJSON ? payload.toJSON() : payload),
-                process.env.REFRESH_SECRET,
-                { expiresIn: process.env.REFRESH_TOKEN_EXPIRES }
+                { id: userId },
+                process.env.JWT_REFRESH_SECRET,
+                { expiresIn: process.env.JWT_REFRESH_EXPIRES }  // e.g., '14d'
             );
         }
-
+        
+    
         module.exports = (plugin) => {
             plugin.controllers.auth.callback = async (ctx) => {
                 const provider = ctx.params.provider || 'local';
@@ -59,11 +45,10 @@
                 if (!_.get(grantSettings, [grantProvider, 'enabled'])) {
                     throw new ApplicationError('This provider is disabled');
                 }
-                
                 if (provider === 'local') {
                     await validateCallbackBody(params);
                     const { identifier } = params;
-
+                    // Check if the user exists.
                     const user = await strapi.query('plugin::users-permissions.user').findOne({
                         where: {
                             provider,
@@ -82,25 +67,25 @@
                     );
                     if (!validPassword) {
                         throw new ValidationError('Invalid identifier or password');
-                    } else {
-                        ctx.cookies.set("refreshToken", issueRefreshToken({ id: user.id }), {
-                            httpOnly: true,
-                            secure: false,
-                            signed: true,
-                            overwrite: true,
+                      } else {
+                        const accessToken = issueJWT({ id: user.id }, { expiresIn: process.env.JWT_SECRET_EXPIRES });
+                        const refreshToken = issueRefreshToken(user.id);
+
+                        await strapi.query('api::refresh-token.refresh-token').create({
+                            data: {
+                                token: refreshToken,
+                                user_id: user.id,
+                                username: user.username,
+                                expiration_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)  // 30 days from now
+                            }
                         });
-                        ctx.cookies.set('accessToken', issueJWT({id: user.id}), {
-                            httpOnly: true,
-                            secure: false,
-                            signed: true,
-                            overwrite: true
-                        });
-                        ctx.send({
+
+                          ctx.send({
                             status: 'Authenticated',
-                            jwt: issueJWT({ id: user.id }, { expiresIn: process.env.JWT_SECRET_EXPIRES }),
+                            jwt: accessToken,
                             user: await sanitizeUser(user, ctx),
-                        });
-                    }
+                          });
+                      }
                     const advancedSettings = await store.get({ key: 'advanced' });
                     const requiresConfirmation = _.get(advancedSettings, 'email_confirmation');
                     if (requiresConfirmation && user.confirmed !== true) {
@@ -109,69 +94,21 @@
                     if (user.blocked === true) {
                         throw new ApplicationError('Your account has been blocked by an administrator');
                     }
-    
+                    return ctx.send({
+                        jwt: getService('jwt').issue({ id: user.id }),
+                        user: await sanitizeUser(user, ctx),
+                    });
                 }
-            }
-            plugin.controllers.auth['refreshToken'] = async (ctx) => {
-                const store = await strapi.store({ type: 'plugin', name: 'users-permissions' });
-                const { refreshToken } = ctx.request.body;
-                let refreshCookie = ctx.cookies.get("refreshToken")
-    
-                if (!refreshCookie && !refreshToken) {
-                    return ctx.badRequest("No Authorization");
-                }
-                if (!refreshCookie) {
-                    if (refreshToken) {
-                        refreshCookie = refreshToken
-                    }
-                    else {
-                        return ctx.badRequest("No Authorization");
-                    }
-                }
+                // Connect the user with a third-party provider.
                 try {
-                    const obj = await verifyRefreshToken(refreshCookie);
-                    const user = await strapi.query('plugin::users-permissions.user').findOne({ where: { id: obj.id } });
-                    if (!user) {
-                        throw new ValidationError('Invalid identifier or password');
-                    }
-                    if (
-                        _.get(await store.get({ key: 'advanced' }), 'email_confirmation') &&
-                        user.confirmed !== true
-                    ) {
-                        throw new ApplicationError('Your account email is not confirmed');
-                    }
-                    if (user.blocked === true) {
-                        throw new ApplicationError('Your account has been blocked by an administrator');
-                    }
-                    const refreshToken = issueRefreshToken({ id: user.id })
-                    ctx.cookies.set("refreshToken", refreshToken, {
-                        httpOnly: true,
-                        secure: false,
-                        signed: true,
-                        overwrite: true,
+                    const user = await getService('providers').connect(provider, ctx.query);
+                    return ctx.send({
+                        jwt: getService('jwt').issue({ id: user.id }),
+                        user: await sanitizeUser(user, ctx),
                     });
-                    ctx.cookies.set('accessToken', issueJWT({id: user.id}), {
-                        httpOnly: true,
-                        secure: false,
-                        signed: true,
-                        overwrite: true
-                    })
-                    ctx.send({
-                        jwt: issueJWT({ id: obj.id }, { expiresIn: process.env.JWT_SECRET_EXPIRES }),
-                    });
-                }
-                catch (err) {
-                    return ctx.badRequest(err.toString());
+                } catch (error) {
+                    throw new ApplicationError(error.message);
                 }
             }
-            plugin.routes['content-api'].routes.push({
-                method: 'POST',
-                path: '/token/refresh',
-                handler: 'auth.refreshToken',
-                config: {
-                    policies: [],
-                    prefix: '',
-                }
-        });
-         return plugin
+            return plugin
         }

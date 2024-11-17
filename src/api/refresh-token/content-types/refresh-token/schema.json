@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "refresh_tokens",
+  "info": {
+    "singularName": "refresh-token",
+    "pluralName": "refresh-tokens",
+    "displayName": "Refresh Tokens",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "token": {
+      "type": "string",
+      "maxLength": 300,
+      "required": true
+    },
+    "user_id": {
+      "type": "integer",
+      "required": true
+    },
+    "username": {
+      "type": "string",
+      "required": true
+    },
+    "expiration_date": {
+      "type": "date",
+      "required": true
+    }
+  }
+}

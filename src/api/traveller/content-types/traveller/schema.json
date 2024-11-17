@@ -1,0 +1,43 @@
+{
+  "kind": "collectionType",
+  "collectionName": "travellers",
+  "info": {
+    "singularName": "traveller",
+    "pluralName": "travellers",
+    "displayName": "Travellers",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "booking": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::flight-booking.flight-booking",
+      "inversedBy": "travellers"
+    },
+    "title": {
+      "type": "string",
+      "required": false
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "nationality": {
+      "type": "string",
+      "required": true
+    },
+    "id_type": {
+      "type": "string",
+      "required": true
+    },
+    "id_number": {
+      "type": "string",
+      "required": true,
+      "private": true
+    }
+  }
+}
