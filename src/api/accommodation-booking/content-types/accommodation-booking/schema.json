@@ -1,97 +1,97 @@
 {
-    "kind": "collectionType",
-    "collectionName": "accommodation_bookings",
-    "info": {
-      "singularName": "accommodation-booking",
-      "pluralName": "accommodation-bookings",
-      "displayName": "Accommodation Booking",
-      "description": ""
+  "kind": "collectionType",
+  "collectionName": "accommodation_bookings",
+  "info": {
+    "singularName": "accommodation-booking",
+    "pluralName": "accommodation-bookings",
+    "displayName": "Accommodation Booking",
+    "description": ""
+  },
+  "options": {
+    "timestamps": true
+  },
+  "attributes": {
+    "full_name": {
+      "type": "string",
+      "required": true
     },
-    "options": {
-      "timestamps": true
+    "email": {
+      "type": "email",
+      "required": true
     },
-    "attributes": {
-      "full_name": {
-        "type": "string",
-        "required": true
-      },
-      "email": {
-        "type": "email",
-        "required": true
-      },
-      "contact_number": {
-        "type": "string",
-        "required": true
-      },
-      "address": {
-        "type": "string"
-      },
-      "check_in": {
-        "type": "date",
-        "required": true
-      },
-      "check_out": {
-        "type": "date",
-        "required": true
-      },
-      "adults": {
-        "type": "integer",
-        "default": 0
-      },
-      "children": {
-        "type": "integer",
-        "default": 0
-      },
-      "infants": {
-        "type": "integer",
-        "default": 0
-      },
-      "purpose": {
-        "type": "enumeration",
-        "enum": ["Leisure", "Business", "Event/Conference", "Other"],
-        "required": true
-      },
-      "other_purpose": {
-        "type": "string"
-      },
-      "room_type": {
-        "type": "enumeration",
-        "enum": ["Standard", "Deluxe", "Suite", "Penthouse", "Other"]
-      },
-      "other_room_type": {
-        "type": "string"
-      },
-      "bed_preference": {
-        "type": "enumeration",
-        "enum": ["King", "Queen", "Twin", "Sofa Bed", "Extra Bed"]
-      },
-      "view_preference": {
-        "type": "enumeration",
-        "enum": ["Ocean View", "City View", "Garden View", "Pool View", "Mountain View"]
-      },
-      "smoking_preference": {
-        "type": "boolean",
-        "default": false
-      },
-      "accessibility": {
-        "type": "boolean",
-        "default": false
-      },
-      "accessibility_specification": {
-        "type": "text"
-      },
-      "budget": {
-        "type": "enumeration",
-        "enum": ["Budget-50-100", "Budget-101-200", "Budget-201-300", "Budget-301-500", "Other"]
-      },
-      "other_budget": {
-        "type": "string"
-      },
-      "payment_method": {
-        "type": "string"
-      },
-      "amenities": {
-        "type": "json"
-      }
+    "contact_number": {
+      "type": "string",
+      "required": true
+    },
+    "address": {
+      "type": "string"
+    },
+    "check_in": {
+      "type": "date",
+      "required": true
+    },
+    "check_out": {
+      "type": "date",
+      "required": true
+    },
+    "adults": {
+      "type": "integer",
+      "default": 0
+    },
+    "children": {
+      "type": "integer",
+      "default": 0
+    },
+    "infants": {
+      "type": "integer",
+      "default": 0
+    },
+    "purpose": {
+      "type": "enumeration",
+      "enum": ["Leisure", "Business", "Event/Conference", "Other"],
+      "required": true
+    },
+    "other_purpose": {
+      "type": "string"
+    },
+    "room_type": {
+      "type": "enumeration",
+      "enum": ["Standard", "Deluxe", "Suite", "Penthouse", "Other"]
+    },
+    "other_room_type": {
+      "type": "string"
+    },
+    "bed_preference": {
+      "type": "enumeration",
+      "enum": ["King", "Queen", "Twin", "Sofa Bed", "Extra Bed"]
+    },
+    "view_preference": {
+      "type": "enumeration",
+      "enum": ["Ocean View", "City View", "Garden View", "Pool View", "Mountain View"]
+    },
+    "smoking_preference": {
+      "type": "boolean",
+      "default": false
+    },
+    "accessibility": {
+      "type": "boolean",
+      "default": false
+    },
+    "accessibility_specification": {
+      "type": "text"
+    },
+    "budget": {
+      "type": "enumeration",
+      "enum": ["Budget-50-100", "Budget-101-200", "Budget-201-300", "Budget-301-500", "Other"]
+    },
+    "other_budget": {
+      "type": "string"
+    },
+    "payment_method": {
+      "type": "string"
+    },
+    "amenities": {
+      "type": "json"
     }
   }
+}

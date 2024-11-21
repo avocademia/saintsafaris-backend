@@ -1,9 +1,5 @@
-'use strict';
+'use strict'
 
-/**
- * employee controller
- */
+const { createCoreController } = require('@strapi/strapi').factories
 
-const { createCoreController } = require('@strapi/strapi').factories;
-
-module.exports = createCoreController('api::employee.employee');
+module.exports = createCoreController('api::employee.employee')

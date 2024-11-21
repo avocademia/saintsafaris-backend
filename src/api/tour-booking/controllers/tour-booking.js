@@ -65,9 +65,13 @@ module.exports = {
         console.error('Error sending confirmation email:', error)
       }
 
+      const nodeEnv = process.env.NODE_ENV
+      const devCCmail = process.env.DEV_CC_EMAIL
+      const prodCCmail = process.env.PROD_CC_EMAIL
+
       const notificationMsg = {
         to: 'info@saintsafaris.com',
-        cc: 'saintsafaris@gmail.com',
+        cc: nodeEnv === 'production'? prodCCmail : devCCmail,
         from: 'no-reply@saintsafaris.com',
         subject: 'New Booking Notification',
         text: `New booking received!
