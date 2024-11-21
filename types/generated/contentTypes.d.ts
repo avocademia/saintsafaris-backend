@@ -362,6 +362,75 @@ export interface AdminUser extends Schema.CollectionType {
   };
 }
 
+export interface ApiAccommodationBookingAccommodationBooking
+  extends Schema.CollectionType {
+  collectionName: 'accommodation_bookings';
+  info: {
+    description: '';
+    displayName: 'Accommodation Booking';
+    pluralName: 'accommodation-bookings';
+    singularName: 'accommodation-booking';
+  };
+  options: {
+    timestamps: true;
+  };
+  attributes: {
+    accessibility: Attribute.Boolean & Attribute.DefaultTo<false>;
+    accessibility_specification: Attribute.Text;
+    address: Attribute.String;
+    adults: Attribute.Integer & Attribute.DefaultTo<0>;
+    amenities: Attribute.JSON;
+    bed_preference: Attribute.Enumeration<
+      ['King', 'Queen', 'Twin', 'Sofa Bed', 'Extra Bed']
+    >;
+    budget: Attribute.Enumeration<
+      [
+        'Budget-50-100',
+        'Budget-101-200',
+        'Budget-201-300',
+        'Budget-301-500',
+        'Other'
+      ]
+    >;
+    check_in: Attribute.Date & Attribute.Required;
+    check_out: Attribute.Date & Attribute.Required;
+    children: Attribute.Integer & Attribute.DefaultTo<0>;
+    contact_number: Attribute.String & Attribute.Required;
+    createdAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::accommodation-booking.accommodation-booking',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    email: Attribute.Email & Attribute.Required;
+    full_name: Attribute.String & Attribute.Required;
+    infants: Attribute.Integer & Attribute.DefaultTo<0>;
+    other_budget: Attribute.String;
+    other_purpose: Attribute.String;
+    other_room_type: Attribute.String;
+    payment_method: Attribute.String;
+    purpose: Attribute.Enumeration<
+      ['Leisure', 'Business', 'Event/Conference', 'Other']
+    > &
+      Attribute.Required;
+    room_type: Attribute.Enumeration<
+      ['Standard', 'Deluxe', 'Suite', 'Penthouse', 'Other']
+    >;
+    smoking_preference: Attribute.Boolean & Attribute.DefaultTo<false>;
+    updatedAt: Attribute.DateTime;
+    updatedBy: Attribute.Relation<
+      'api::accommodation-booking.accommodation-booking',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    view_preference: Attribute.Enumeration<
+      ['Ocean View', 'City View', 'Garden View', 'Pool View', 'Mountain View']
+    >;
+  };
+}
+
 export interface ApiActivityActivity extends Schema.CollectionType {
   collectionName: 'activities';
   info: {
@@ -1202,6 +1271,7 @@ declare module '@strapi/types' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::accommodation-booking.accommodation-booking': ApiAccommodationBookingAccommodationBooking;
       'api::activity.activity': ApiActivityActivity;
       'api::employee.employee': ApiEmployeeEmployee;
       'api::flight-booking.flight-booking': ApiFlightBookingFlightBooking;
