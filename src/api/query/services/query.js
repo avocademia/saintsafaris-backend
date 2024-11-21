@@ -1,9 +1,5 @@
-'use strict';
+'use strict'
 
-/**
- * query service
- */
+const { createCoreService } = require('@strapi/strapi').factories
 
-const { createCoreService } = require('@strapi/strapi').factories;
-
-module.exports = createCoreService('api::query.query');
+module.exports = createCoreService('api::query.query')

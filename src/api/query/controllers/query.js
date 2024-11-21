@@ -29,9 +29,14 @@ module.exports = {
       } catch (error) {
         ctx.throw(500, 'Error submitting request')
       }
+
+      const nodeEnv = process.env.NODE_ENV
+      const devCCmail = process.env.DEV_CC_EMAIL
+      const prodCCmail = process.env.PROD_CC_EMAIL
+
       const notificationMsg = {
         to: 'info@saintsafaris.com',
-        cc: 'vizionbnm@gmail.com',
+        cc: nodeEnv === 'production'? prodCCmail : devCCmail,
         from: 'no-reply@saintsafaris.com',
         subject: `New Query: ${subject}`,
         text: `Full Name: ${full_name}\nEmail: ${email}\nMessage: ${message}`,

@@ -3,25 +3,25 @@ module.exports = ({ env }) => ({
     enabled: true,
     config: {
       jwt: {
-        expiresIn: '30d',
+        expiresIn: '15min',
       },
     },
   },
   email: {
       config:{
-        provider: 'nodemailer',  // Use emailjs for SMTP in Strapi
+        provider: 'nodemailer',
         providerOptions: {
-          host: env('SMTP_HOST', 'smtp.mailgun.org'), // Mailgun SMTP host
+          host: env('SMTP_HOST', 'smtp.mailgun.org'),
           port: env('SMTP_PORT', 587),
           auth: {
-              user: env('MAILGUN_USER'), // Your Mailgun SMTP username
+              user: env('MAILGUN_USER'),
               pass: env('MAILGUN_PASS')
           }
         },
         settings: {
-          defaultFrom: 'no-reply@saintsafaris.com', // Default 'from' email address
-          defaultReplyTo: 'mail@saintsafaris.com', // Default reply-to email address
+          defaultFrom: 'no-reply@saintsafaris.com',
+          defaultReplyTo: 'info@saintsafaris.com',
         },
       }
   },
-});
+})
