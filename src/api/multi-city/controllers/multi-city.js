@@ -1,4 +1,4 @@
-const validator = require('validator');
+const validator = require('validator')
 
 module.exports = {
   async create(ctx) {
@@ -29,7 +29,7 @@ module.exports = {
         message: 'Multi-city destinations added successfully!',
       }
     } catch (error) {
-      ctx.throw(500, `${error.message}`);
+      ctx.throw(500, `${error.message}`)
     }
   },
 }

@@ -1,9 +1,5 @@
-'use strict';
+'use strict'
 
-/**
- * tour controller
- */
+const { createCoreController } = require('@strapi/strapi').factories
 
-const { createCoreController } = require('@strapi/strapi').factories;
-
-module.exports = createCoreController('api::tour.tour');
+module.exports = createCoreController('api::tour.tour')

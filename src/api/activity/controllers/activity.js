@@ -1,9 +1,5 @@
-'use strict';
+'use strict'
 
-/**
- * activity controller
- */
+const { createCoreController } = require('@strapi/strapi').factories
 
-const { createCoreController } = require('@strapi/strapi').factories;
-
-module.exports = createCoreController('api::activity.activity');
+module.exports = createCoreController('api::activity.activity')

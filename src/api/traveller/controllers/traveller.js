@@ -1,12 +1,10 @@
-const validator = require('validator');
+const validator = require('validator')
 
 module.exports = {
   async create(ctx) {
     try {
 
       const { booking, travelers } = ctx.request.body
-
-      console.log('traveller req:',ctx.request.body)
 
       if (!booking) {
         ctx.throw(400, 'Booking ID is required');

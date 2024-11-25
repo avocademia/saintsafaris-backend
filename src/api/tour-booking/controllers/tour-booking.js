@@ -5,15 +5,10 @@ const validator = require('validator')
 module.exports = {
   async create(ctx) {
     const {
-      first_name,
-      surname,
-      phone,
-      email,
-      adults,
-      children,
-      city,
-      travel_date,
-      message,
+      first_name,surname,
+      phone,email,
+      adults,children,
+      city,travel_date,message,
     } = ctx.request.body
 
     try {
@@ -46,7 +41,7 @@ module.exports = {
         message: message && validator.isLength(message, { max: 1000 })
           ? validator.escape(message)
           : ctx.throw(400, 'Message must not exceed 1000 characters'),
-      };
+      }
 
       const entity = await strapi.service('api::tour-booking.tour-booking').create({
         data: sanitizedData,

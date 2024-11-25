@@ -1,9 +1,5 @@
-'use strict';
+'use strict'
 
-/**
- * activity service
- */
+const { createCoreService } = require('@strapi/strapi').factories
 
-const { createCoreService } = require('@strapi/strapi').factories;
-
-module.exports = createCoreService('api::activity.activity');
+module.exports = createCoreService('api::activity.activity')

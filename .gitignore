@@ -92,6 +92,7 @@ results
 node_modules
 .node_history
 build
+.env
 
 ############################
 # Tests
@@ -106,5 +107,4 @@ coverage
 license.txt
 exports
 dist
-build
 .strapi-updater.json

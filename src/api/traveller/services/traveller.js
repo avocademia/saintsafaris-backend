@@ -1,9 +1,5 @@
-'use strict';
+'use strict'
 
-/**
- * traveller service
- */
+const { createCoreService } = require('@strapi/strapi').factories
 
-const { createCoreService } = require('@strapi/strapi').factories;
-
-module.exports = createCoreService('api::traveller.traveller');
+module.exports = createCoreService('api::traveller.traveller')
