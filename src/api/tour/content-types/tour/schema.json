@@ -4,7 +4,7 @@
   "info": {
     "singularName": "tour",
     "pluralName": "tours",
-    "displayName": "tours",
+    "displayName": "Tours",
     "description": ""
   },
   "options": {
@@ -95,12 +95,6 @@
         "other"
       ],
       "required": true
-    },
-    "activities": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::activity.activity",
-      "mappedBy": "tours"
     }
   }
 }

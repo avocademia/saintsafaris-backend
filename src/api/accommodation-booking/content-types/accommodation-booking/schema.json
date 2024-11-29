@@ -8,7 +8,7 @@
     "description": ""
   },
   "options": {
-    "timestamps": true
+    "draftAndPublish": false
   },
   "attributes": {
     "full_name": {
@@ -22,9 +22,6 @@
     "contact_number": {
       "type": "string",
       "required": true
-    },
-    "address": {
-      "type": "string"
     },
     "check_in": {
       "type": "date",
@@ -42,13 +39,14 @@
       "type": "integer",
       "default": 0
     },
-    "infants": {
-      "type": "integer",
-      "default": 0
-    },
     "purpose": {
       "type": "enumeration",
-      "enum": ["Leisure", "Business", "Event/Conference", "Other"],
+      "enum": [
+        "Leisure",
+        "Business",
+        "Event/Conference",
+        "Other"
+      ],
       "required": true
     },
     "other_purpose": {
@@ -56,42 +54,29 @@
     },
     "room_type": {
       "type": "enumeration",
-      "enum": ["Standard", "Deluxe", "Suite", "Penthouse", "Other"]
-    },
-    "other_room_type": {
-      "type": "string"
-    },
-    "bed_preference": {
-      "type": "enumeration",
-      "enum": ["King", "Queen", "Twin", "Sofa Bed", "Extra Bed"]
-    },
-    "view_preference": {
-      "type": "enumeration",
-      "enum": ["Ocean View", "City View", "Garden View", "Pool View", "Mountain View"]
-    },
-    "smoking_preference": {
-      "type": "boolean",
-      "default": false
-    },
-    "accessibility": {
-      "type": "boolean",
-      "default": false
-    },
-    "accessibility_specification": {
-      "type": "text"
-    },
-    "budget": {
-      "type": "enumeration",
-      "enum": ["Budget-50-100", "Budget-101-200", "Budget-201-300", "Budget-301-500", "Other"]
+      "enum": [
+        "Standard",
+        "Deluxe",
+        "Suite",
+        "Penthouse",
+        "Other"
+      ]
     },
     "other_budget": {
       "type": "string"
     },
-    "payment_method": {
-      "type": "string"
-    },
     "amenities": {
       "type": "json"
+    },
+    "bed_preferences": {
+      "type": "json"
+    },
+    "view_preferences": {
+      "type": "json"
+    },
+    "budget": {
+      "type": "string",
+      "maxLength": 7
     }
   }
 }

@@ -372,26 +372,16 @@ export interface ApiAccommodationBookingAccommodationBooking
     singularName: 'accommodation-booking';
   };
   options: {
-    timestamps: true;
+    draftAndPublish: false;
   };
   attributes: {
-    accessibility: Attribute.Boolean & Attribute.DefaultTo<false>;
-    accessibility_specification: Attribute.Text;
-    address: Attribute.String;
     adults: Attribute.Integer & Attribute.DefaultTo<0>;
     amenities: Attribute.JSON;
-    bed_preference: Attribute.Enumeration<
-      ['King', 'Queen', 'Twin', 'Sofa Bed', 'Extra Bed']
-    >;
-    budget: Attribute.Enumeration<
-      [
-        'Budget-50-100',
-        'Budget-101-200',
-        'Budget-201-300',
-        'Budget-301-500',
-        'Other'
-      ]
-    >;
+    bed_preferences: Attribute.JSON;
+    budget: Attribute.String &
+      Attribute.SetMinMaxLength<{
+        maxLength: 7;
+      }>;
     check_in: Attribute.Date & Attribute.Required;
     check_out: Attribute.Date & Attribute.Required;
     children: Attribute.Integer & Attribute.DefaultTo<0>;
@@ -405,11 +395,8 @@ export interface ApiAccommodationBookingAccommodationBooking
       Attribute.Private;
     email: Attribute.Email & Attribute.Required;
     full_name: Attribute.String & Attribute.Required;
-    infants: Attribute.Integer & Attribute.DefaultTo<0>;
     other_budget: Attribute.String;
     other_purpose: Attribute.String;
-    other_room_type: Attribute.String;
-    payment_method: Attribute.String;
     purpose: Attribute.Enumeration<
       ['Leisure', 'Business', 'Event/Conference', 'Other']
     > &
@@ -417,7 +404,6 @@ export interface ApiAccommodationBookingAccommodationBooking
     room_type: Attribute.Enumeration<
       ['Standard', 'Deluxe', 'Suite', 'Penthouse', 'Other']
     >;
-    smoking_preference: Attribute.Boolean & Attribute.DefaultTo<false>;
     updatedAt: Attribute.DateTime;
     updatedBy: Attribute.Relation<
       'api::accommodation-booking.accommodation-booking',
@@ -425,45 +411,7 @@ export interface ApiAccommodationBookingAccommodationBooking
       'admin::user'
     > &
       Attribute.Private;
-    view_preference: Attribute.Enumeration<
-      ['Ocean View', 'City View', 'Garden View', 'Pool View', 'Mountain View']
-    >;
-  };
-}
-
-export interface ApiActivityActivity extends Schema.CollectionType {
-  collectionName: 'activities';
-  info: {
-    description: '';
-    displayName: 'Destination Activities';
-    pluralName: 'activities';
-    singularName: 'activity';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    activity: Attribute.String;
-    createdAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::activity.activity',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    publishedAt: Attribute.DateTime;
-    tours: Attribute.Relation<
-      'api::activity.activity',
-      'manyToMany',
-      'api::tour.tour'
-    >;
-    updatedAt: Attribute.DateTime;
-    updatedBy: Attribute.Relation<
-      'api::activity.activity',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
+    view_preferences: Attribute.JSON;
   };
 }
 
@@ -596,39 +544,6 @@ export interface ApiMultiCityMultiCity extends Schema.CollectionType {
   };
 }
 
-export interface ApiQueryQuery extends Schema.CollectionType {
-  collectionName: 'queries';
-  info: {
-    description: '';
-    displayName: 'queries';
-    pluralName: 'queries';
-    singularName: 'query';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    createdAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::query.query',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    email: Attribute.String & Attribute.Required;
-    full_name: Attribute.String & Attribute.Required;
-    message: Attribute.Text & Attribute.Required;
-    subject: Attribute.String;
-    updatedAt: Attribute.DateTime;
-    updatedBy: Attribute.Relation<
-      'api::query.query',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
 export interface ApiRefreshTokenRefreshToken extends Schema.CollectionType {
   collectionName: 'refresh_tokens';
   info: {
@@ -750,7 +665,7 @@ export interface ApiTourTour extends Schema.CollectionType {
   collectionName: 'tours';
   info: {
     description: '';
-    displayName: 'tours';
+    displayName: 'Tours';
     pluralName: 'tours';
     singularName: 'tour';
   };
@@ -758,11 +673,6 @@ export interface ApiTourTour extends Schema.CollectionType {
     draftAndPublish: true;
   };
   attributes: {
-    activities: Attribute.Relation<
-      'api::tour.tour',
-      'manyToMany',
-      'api::activity.activity'
-    >;
     cancellation_conclusion: Attribute.Text & Attribute.Required;
     cancellations: Attribute.JSON & Attribute.Required;
     continent: Attribute.Enumeration<
@@ -1272,11 +1182,9 @@ declare module '@strapi/types' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::accommodation-booking.accommodation-booking': ApiAccommodationBookingAccommodationBooking;
-      'api::activity.activity': ApiActivityActivity;
       'api::employee.employee': ApiEmployeeEmployee;
       'api::flight-booking.flight-booking': ApiFlightBookingFlightBooking;
       'api::multi-city.multi-city': ApiMultiCityMultiCity;
-      'api::query.query': ApiQueryQuery;
       'api::refresh-token.refresh-token': ApiRefreshTokenRefreshToken;
       'api::review.review': ApiReviewReview;
       'api::tour-booking.tour-booking': ApiTourBookingTourBooking;

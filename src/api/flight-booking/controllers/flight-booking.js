@@ -5,15 +5,13 @@ module.exports = {
     try {
 
       const {
-
         title,full_name,phone,
         email,adults,children,
         infants,travel_date,city,
         destination,return_date,
         tripType,visaAssistance,
         travelers = [],
-        multiCityDestinations = [],
-        
+        multiCityDestinations = [], 
       } = ctx.request.body
 
       const sanitizedData = {

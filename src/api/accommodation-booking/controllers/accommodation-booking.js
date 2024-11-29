@@ -3,24 +3,23 @@ const validator = require('validator')
 module.exports = {
   async create(ctx) {
     try {
+
       const {
         full_name,email,
-        contact_number,address,
+        contact_number, 
         check_in,check_out,
         adults,children,
         purpose,other_purpose,
-        room_type,other_room_type,
-        bed_preference,view_preference,
-        smoking_preference, accessibility,
-        accessibility_specification,budget,
-        other_budget,payment_method,amenities = []
+        room_type,bed_preferences,
+        view_preferences,budget,
+        other_budget,payment_method,
+        amenities,
       } = ctx.request.body
 
       const sanitizedData = {
         full_name: full_name ? validator.escape(full_name) : '',
         email: email ? validator.normalizeEmail(email) : '',
         contact_number: contact_number ? validator.trim(contact_number) : '',
-        address: address ? validator.escape(address) : '',
         check_in: check_in ? validator.toDate(check_in) : null,
         check_out: check_out ? validator.toDate(check_out) : null,
         adults: parseInt(adults, 10) || 0,
@@ -28,17 +27,10 @@ module.exports = {
         purpose: purpose ? validator.escape(purpose) : '',
         other_purpose: other_purpose ? validator.escape(other_purpose) : '',
         room_type: room_type ? validator.escape(room_type) : '',
-        other_room_type: other_room_type ? validator.escape(other_room_type) : '',
-        bed_preference: bed_preference ? validator.escape(bed_preference) : '',
-        view_preference: view_preference ? validator.escape(view_preference) : '',
-        smoking_preference: smoking_preference ? validator.escape(smoking_preference) : '',
-        accessibility: !!accessibility,
-        accessibility_specification: accessibility_specification
-          ? validator.escape(accessibility_specification)
-          : '',
+        bed_preferences: Array.isArray(bed_preferences) ? bed_preferences.map(validator.escape) : [],
+        view_preferences: Array.isArray(view_preferences) ? view_preferences.map(validator.escape) : [],
         budget: budget ? validator.escape(budget) : '',
         other_budget: other_budget ? validator.escape(other_budget) : '',
-        payment_method: payment_method ? validator.escape(payment_method) : '',
         amenities: Array.isArray(amenities) ? amenities.map(validator.escape) : []
       }
 
@@ -59,7 +51,7 @@ module.exports = {
         to: email,
         from: 'no-reply@saintsafaris.com',
         subject: 'Accommodation Booking Confirmation',
-        text: `Hello ${full_name},
+        text: `Hello ${sanitizedData.full_name},
                Your accommodation booking has been received and is being processed.
                We will contact you shortly with all available options.`
       }
@@ -70,26 +62,28 @@ module.exports = {
         console.error('Error sending confirmation email:', error)
       }
 
+      const nodeEnv = process.env.NODE_ENV
+      const devCCmail = process.env.DEV_CC_EMAIL
+      const prodCCmail = process.env.PROD_CC_EMAIL
+
       const notificationMsg = {
         to: 'info@saintsafaris.com',
-        cc: 'saintsafaris@gmail.com',
+        cc: nodeEnv === 'production'? prodCCmail:devCCmail,
         from: 'no-reply@saintsafaris.com',
         subject: `New Accommodation Booking ID: ${booking.id}`,
         text: `
                New accommodation booking received!
-               Name: ${full_name || ''}
-               Contact Number: ${contact_number || ''}
-               Email: ${email || ''}
-               Adults: ${adults || 0}
-               Children: ${children || 0}
-               Check-In: ${check_in || ''}
-               Check-Out: ${check_out || ''}
-               Purpose: ${purpose || ''}${other_purpose ? ` (Other: ${other_purpose})` : ''}
-               Room Type: ${room_type || ''}${other_room_type ? ` (Other: ${other_room_type})` : ''}
-               Bed Preference: ${bed_preference || ''}
-               View Preference: ${view_preference || ''}
-               Smoking Preference: ${smoking_preference || ''}
-               Accessibility: ${accessibility ? 'Yes' : 'No'}${accessibility_specification ? ` (Details: ${accessibility_specification})` : ''}
+               Name: ${sanitizedData.full_name || ''}
+               Contact Number: ${sanitizedData.contact_number || ''}
+               Email: ${sanitizedData.email || ''}
+               Adults: ${sanitizedData.adults || 0}
+               Children: ${sanitizedData.children || 0}
+               Check-In: ${sanitizedData.check_in || ''}
+               Check-Out: ${sanitizedData.check_out || ''}
+               Purpose: ${sanitizedData.purpose || ''}${sanitizedData.other_purpose ? ` (Other: ${sanitizedData.other_purpose})` : ''}
+               Room Type: ${sanitizedData.room_type || ''}
+               Bed Preferences: ${sanitizedData.bed_preferences.length > 0 ? sanitizedData.bed_preferences.join(', ') : 'None provided'}
+               View Preferences: ${sanitizedData.view_preferences.length > 0 ? sanitizedData.view_preferences.join(', ') : 'None provided'}
                Budget: ${budget || ''}${other_budget ? ` (Other: ${other_budget})` : ''}
                Payment Method: ${payment_method || ''}
                Amenities: ${amenities.length > 0 ? amenities.join(', ') : 'None provided'}

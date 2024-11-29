@@ -75,6 +75,17 @@ module.exports = (plugin) => {
                     params.password,
                     user.password
                 )
+
+                const advancedSettings = await store.get({ key: 'advanced' })
+                const requiresConfirmation = _.get(advancedSettings, 'email_confirmation')
+
+                if (requiresConfirmation && user.confirmed !== true) {
+                    ctx.throw(403, 'Your account email is not confirmed')
+                }
+
+                if (user.blocked === true) {
+                    ctx.throw(403, 'Your account has been blocked by an administrator')
+                }
                     
                 if (!validPassword) {
                     ctx.throw(403, 'Invalid identifier or password');
@@ -98,58 +109,6 @@ module.exports = (plugin) => {
                         user: await sanitizeUser(user, ctx),
                     })
                 }
-
-                const advancedSettings = await store.get({ key: 'advanced' })
-                const requiresConfirmation = _.get(advancedSettings, 'email_confirmation')
-
-                if (requiresConfirmation && user.confirmed !== true) {
-                    ctx.throw(403, 'Your account email is not confirmed')
-                }
-
-                if (user.blocked === true) {
-                    ctx.throw(403, 'Your account has been blocked by an administrator')
-                }
-
-                accessToken = issueJWT({ id: user.id }, { expiresIn: process.env.JWT_SECRET_EXPIRES })
-                refreshToken = issueRefreshToken(user.id)
-
-                await strapi.query('api::refresh-token.refresh-token').create({
-                    data: {
-                        token: refreshToken,
-                        user_id: user.id,
-                        username: user.username,
-                        expiration_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)//30d
-                    }
-                })
-
-                return ctx.send({
-                    jwt: accessToken,
-                    user: await sanitizeUser(user, ctx),
-                })
-            }
-
-            try {
-
-                const user = await getService('providers').connect(provider, ctx.query)
-                accessToken = issueJWT({ id: user.id }, { expiresIn: process.env.JWT_SECRET_EXPIRES })
-                refreshToken = issueRefreshToken(user.id)
-
-                await strapi.query('api::refresh-token.refresh-token').create({
-                    data: {
-                        token: refreshToken,
-                        user_id: user.id,
-                        username: user.username,
-                        expiration_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)//30d
-                        }
-                    })
-
-                return ctx.send({
-                    jwt: accessToken,
-                    user: await sanitizeUser(user, ctx),
-                })
-
-            } catch (error) {
-                ctx.throw(500, error.message)
             }
         }
     return plugin

@@ -89,9 +89,9 @@ lcov.info
 pids
 logs
 results
-node_modules
+node_modules/
 .node_history
-build
+build/
 .env
 
 ############################
