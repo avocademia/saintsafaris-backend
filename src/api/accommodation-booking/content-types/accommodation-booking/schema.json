@@ -39,6 +39,10 @@
       "type": "integer",
       "default": 0
     },
+    "infants": {
+      "type": "integer",
+      "default": 0
+    },
     "purpose": {
       "type": "enumeration",
       "enum": [
@@ -63,6 +67,9 @@
       ]
     },
     "other_budget": {
+      "type": "string"
+    },
+    "payment_method": {
       "type": "string"
     },
     "amenities": {

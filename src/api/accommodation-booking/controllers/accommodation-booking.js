@@ -1,4 +1,5 @@
-const validator = require('validator')
+const validator = require('validator');
+
 
 module.exports = {
   async create(ctx) {
@@ -27,26 +28,31 @@ module.exports = {
         purpose: purpose ? validator.escape(purpose) : '',
         other_purpose: other_purpose ? validator.escape(other_purpose) : '',
         room_type: room_type ? validator.escape(room_type) : '',
-        bed_preferences: Array.isArray(bed_preferences) ? bed_preferences.map(validator.escape) : [],
-        view_preferences: Array.isArray(view_preferences) ? view_preferences.map(validator.escape) : [],
         budget: budget ? validator.escape(budget) : '',
         other_budget: other_budget ? validator.escape(other_budget) : '',
+        payment_method: payment_method ? validator.escape(payment_method) : '',
         amenities: Array.isArray(amenities) ? amenities.map(validator.escape) : []
-      }
+      };
 
+
+      // Creating a new booking
       const booking = await strapi.db.query('api::accommodation-booking.accommodation-booking').create({
         data: sanitizedData
-      })
+      });
+
 
       if (!booking || !booking.id) {
-        ctx.throw(400, 'Failed to create booking')
+        ctx.throw(400, 'Failed to create booking');
       }
+
 
       ctx.body = {
         message: 'Booking created successfully!',
         bookingId: booking.id
-      }
+      };
 
+
+      // Sending confirmation email
       const confirmationMsg = {
         to: email,
         from: 'no-reply@saintsafaris.com',
@@ -57,15 +63,17 @@ module.exports = {
       }
 
       try {
-        await strapi.plugins['email'].services.email.send(confirmationMsg)
+        await strapi.plugins['email'].services.email.send(confirmationMsg);
       } catch (error) {
-        console.error('Error sending confirmation email:', error)
+        console.error('Error sending confirmation email:', error);
       }
 
       const nodeEnv = process.env.NODE_ENV
       const devCCmail = process.env.DEV_CC_EMAIL
       const prodCCmail = process.env.PROD_CC_EMAIL
 
+
+      // Sending notification email
       const notificationMsg = {
         to: 'info@saintsafaris.com',
         cc: nodeEnv === 'production'? prodCCmail:devCCmail,
@@ -92,13 +100,13 @@ module.exports = {
       }
 
       try {
-        await strapi.plugins['email'].services.email.send(notificationMsg)
+        await strapi.plugins['email'].services.email.send(notificationMsg);
       } catch (error) {
-        console.error('Error sending notification email:', error, '\nRequest body:', ctx.request.body)
+        console.error('Error sending notification email:', error, '\nRequest body:', ctx.request.body);
       }
     } catch (error) {
       console.error('Error creating booking:', error);
-      ctx.throw(500, 'An error occurred while creating the booking')
+      ctx.throw(500, 'An error occurred while creating the booking');
     }
   }
-}
+};
