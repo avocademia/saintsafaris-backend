@@ -5,6 +5,7 @@ const validator = require('validator')
 module.exports = {
   async create(ctx) {
     const {
+      tour,
       first_name,surname,
       phone,email,
       adults,children,
@@ -14,22 +15,25 @@ module.exports = {
     try {
 
       const sanitizedData = {
+        tour: tour && validator.isLength(tour, { min: 1, max: 100 })
+          ? validator.escape(tour)
+          : ctx.throw(400, 'Invalid tour'),
         first_name: first_name && validator.isLength(first_name, { min: 1, max: 100 })
           ? validator.escape(first_name)
           : ctx.throw(400, 'Invalid first name'),
         surname: surname && validator.isLength(surname, { min: 1, max: 100 })
           ? validator.escape(surname)
           : ctx.throw(400, 'Invalid surname'),
-        phone: phone && validator.isMobilePhone(phone)
+        phone: phone
           ? validator.escape(phone)
           : ctx.throw(400, 'Invalid phone number'),
         email: email && validator.isEmail(email)
           ? validator.normalizeEmail(email)
           : ctx.throw(400, 'Invalid email'),
-        adults: adults && validator.isInt(adults.toString(), { min: 1 })
+        adults: adults
           ? parseInt(adults, 10)
           : ctx.throw(400, 'Adults must be a positive integer'),
-        children: children && validator.isInt(children.toString(), { min: 0 })
+        children: children
           ? parseInt(children, 10)
           : ctx.throw(400, 'Children must be a non-negative integer'),
         city: city && validator.isLength(city, { min: 1, max: 100 })
@@ -68,8 +72,9 @@ module.exports = {
         to: 'info@saintsafaris.com',
         cc: nodeEnv === 'production'? prodCCmail : devCCmail,
         from: 'no-reply@saintsafaris.com',
-        subject: 'New Booking Notification',
+        subject: `'New Tour Booking id: ${entity.id} `,
         text: `New booking received!
+               \nTour: ${sanitizedData.tour}
                \n\nFirst Name: ${sanitizedData.first_name}
                \nSurname: ${sanitizedData.surname}
                \nPhone: ${sanitizedData.phone}
@@ -90,7 +95,7 @@ module.exports = {
       return entity
     } catch (error) {
       console.error('Error in booking creation:', error.message)
-      ctx.throw(500, 'An error occurred during booking creation')
+      ctx.throw(500, error.message)
     }
   },
 }

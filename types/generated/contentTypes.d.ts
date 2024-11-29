@@ -395,8 +395,10 @@ export interface ApiAccommodationBookingAccommodationBooking
       Attribute.Private;
     email: Attribute.Email & Attribute.Required;
     full_name: Attribute.String & Attribute.Required;
+    infants: Attribute.Integer & Attribute.DefaultTo<0>;
     other_budget: Attribute.String;
     other_purpose: Attribute.String;
+    payment_method: Attribute.String;
     purpose: Attribute.Enumeration<
       ['Leisure', 'Business', 'Event/Conference', 'Other']
     > &
