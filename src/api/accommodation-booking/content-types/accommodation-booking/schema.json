@@ -11,18 +11,6 @@
     "draftAndPublish": false
   },
   "attributes": {
-    "full_name": {
-      "type": "string",
-      "required": true
-    },
-    "email": {
-      "type": "email",
-      "required": true
-    },
-    "contact_number": {
-      "type": "string",
-      "required": true
-    },
     "check_in": {
       "type": "date",
       "required": true
@@ -84,6 +72,10 @@
     "budget": {
       "type": "string",
       "maxLength": 7
+    },
+    "user_id": {
+      "type": "biginteger",
+      "required": true
     }
   }
 }

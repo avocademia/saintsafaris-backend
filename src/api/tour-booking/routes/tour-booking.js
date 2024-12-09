@@ -4,9 +4,6 @@ module.exports = {
       method: 'POST',
       path: '/tour-bookings',
       handler: 'tour-booking.create',
-      config: {
-        auth: false
-      }
     },
   ]
 }

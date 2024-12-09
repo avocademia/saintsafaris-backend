@@ -385,7 +385,6 @@ export interface ApiAccommodationBookingAccommodationBooking
     check_in: Attribute.Date & Attribute.Required;
     check_out: Attribute.Date & Attribute.Required;
     children: Attribute.Integer & Attribute.DefaultTo<0>;
-    contact_number: Attribute.String & Attribute.Required;
     createdAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::accommodation-booking.accommodation-booking',
@@ -393,8 +392,6 @@ export interface ApiAccommodationBookingAccommodationBooking
       'admin::user'
     > &
       Attribute.Private;
-    email: Attribute.Email & Attribute.Required;
-    full_name: Attribute.String & Attribute.Required;
     infants: Attribute.Integer & Attribute.DefaultTo<0>;
     other_budget: Attribute.String;
     other_purpose: Attribute.String;
@@ -413,6 +410,7 @@ export interface ApiAccommodationBookingAccommodationBooking
       'admin::user'
     > &
       Attribute.Private;
+    user_id: Attribute.BigInteger & Attribute.Required;
     view_preferences: Attribute.JSON;
   };
 }
@@ -477,7 +475,6 @@ export interface ApiFlightBookingFlightBooking extends Schema.CollectionType {
       'oneToMany',
       'api::multi-city.multi-city'
     >;
-    client_title: Attribute.String & Attribute.Required;
     createdAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::flight-booking.flight-booking',
@@ -488,11 +485,8 @@ export interface ApiFlightBookingFlightBooking extends Schema.CollectionType {
     depart_from: Attribute.String & Attribute.Required;
     departure_date: Attribute.Date;
     destination: Attribute.String;
-    email: Attribute.Email & Attribute.Required;
     fulfilled: Attribute.Boolean & Attribute.DefaultTo<false>;
     infants: Attribute.Integer;
-    name: Attribute.String & Attribute.Required;
-    phone_number: Attribute.BigInteger & Attribute.Required;
     return_date: Attribute.Date;
     travellers: Attribute.Relation<
       'api::flight-booking.flight-booking',
@@ -507,6 +501,7 @@ export interface ApiFlightBookingFlightBooking extends Schema.CollectionType {
       'admin::user'
     > &
       Attribute.Private;
+    user_id: Attribute.BigInteger & Attribute.Required;
     visa_assistance: Attribute.Boolean & Attribute.DefaultTo<false>;
   };
 }
@@ -546,6 +541,38 @@ export interface ApiMultiCityMultiCity extends Schema.CollectionType {
   };
 }
 
+export interface ApiQueryQuery extends Schema.CollectionType {
+  collectionName: 'queries';
+  info: {
+    description: '';
+    displayName: 'Queries';
+    pluralName: 'queries';
+    singularName: 'query';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::query.query',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    message: Attribute.Text & Attribute.Required;
+    subject: Attribute.String & Attribute.Required;
+    updatedAt: Attribute.DateTime;
+    updatedBy: Attribute.Relation<
+      'api::query.query',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    user_id: Attribute.BigInteger & Attribute.Required;
+  };
+}
+
 export interface ApiRefreshTokenRefreshToken extends Schema.CollectionType {
   collectionName: 'refresh_tokens';
   info: {
@@ -566,6 +593,7 @@ export interface ApiRefreshTokenRefreshToken extends Schema.CollectionType {
     > &
       Attribute.Private;
     expiration_date: Attribute.Date & Attribute.Required;
+    ip_address: Attribute.String & Attribute.Required;
     token: Attribute.String &
       Attribute.Required &
       Attribute.SetMinMaxLength<{
@@ -628,6 +656,7 @@ export interface ApiReviewReview extends Schema.CollectionType {
 export interface ApiTourBookingTourBooking extends Schema.CollectionType {
   collectionName: 'tour_bookings';
   info: {
+    description: '';
     displayName: 'Tour Booking';
     pluralName: 'tour-bookings';
     singularName: 'tour-booking';
@@ -646,11 +675,7 @@ export interface ApiTourBookingTourBooking extends Schema.CollectionType {
       'admin::user'
     > &
       Attribute.Private;
-    email: Attribute.String & Attribute.Required;
-    first_name: Attribute.String & Attribute.Required;
     message: Attribute.Text;
-    phone: Attribute.BigInteger & Attribute.Required;
-    surname: Attribute.String & Attribute.Required;
     tour: Attribute.String & Attribute.Required;
     travel_date: Attribute.Date;
     updatedAt: Attribute.DateTime;
@@ -660,6 +685,7 @@ export interface ApiTourBookingTourBooking extends Schema.CollectionType {
       'admin::user'
     > &
       Attribute.Private;
+    user_id: Attribute.BigInteger & Attribute.Required;
   };
 }
 
@@ -1149,6 +1175,7 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       Attribute.SetMinMaxLength<{
         minLength: 6;
       }>;
+    phone_number: Attribute.BigInteger & Attribute.Required;
     provider: Attribute.String;
     resetPasswordToken: Attribute.String & Attribute.Private;
     role: Attribute.Relation<
@@ -1187,6 +1214,7 @@ declare module '@strapi/types' {
       'api::employee.employee': ApiEmployeeEmployee;
       'api::flight-booking.flight-booking': ApiFlightBookingFlightBooking;
       'api::multi-city.multi-city': ApiMultiCityMultiCity;
+      'api::query.query': ApiQueryQuery;
       'api::refresh-token.refresh-token': ApiRefreshTokenRefreshToken;
       'api::review.review': ApiReviewReview;
       'api::tour-booking.tour-booking': ApiTourBookingTourBooking;

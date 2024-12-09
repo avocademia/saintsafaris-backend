@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "queries",
+  "info": {
+    "singularName": "query",
+    "pluralName": "queries",
+    "displayName": "Queries",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "message": {
+      "type": "text",
+      "required": true
+    },
+    "subject": {
+      "type": "string",
+      "required": true
+    },
+    "user_id": {
+      "type": "biginteger",
+      "required": true
+    }
+  }
+}

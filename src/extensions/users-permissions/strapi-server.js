@@ -1,5 +1,6 @@
 'use-strict'
 
+const GetClientIP = require('../../middleware/getClientIP')
 const utils = require('@strapi/utils');
 const { getService } = require('./utils')
 const jwt = require('jsonwebtoken')
@@ -94,19 +95,31 @@ module.exports = (plugin) => {
 
                     accessToken = issueJWT({ id: user.id }, { expiresIn: process.env.JWT_SECRET_EXPIRES })
                     refreshToken = issueRefreshToken(user.id)
+                    const clientIP = GetClientIP(ctx)
 
                     await strapi.query('api::refresh-token.refresh-token').create({
                         data: {
                             token: refreshToken,
                             user_id: user.id,
                             username: user.username,
-                            expiration_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)//30d
+                            expiration_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),//30d
+                            ip_address: clientIP
                         }
                     })
 
+                    if (process.env.NODE_ENV === 'production') {
+                        ctx.cookies.set('acst', accessToken, {
+                            httpOnly: true,
+                            secure: true,
+                            path: '/',
+                            sameSite: 'None',
+                            maxAge: 30*24*60*1000 //30d
+                        })
+                    }
+
                     ctx.send({
                         status: 'Authenticated',
-                        jwt: accessToken,
+                        jwt: process.env.NODE_ENV === 'production'? 'token availablea': accessToken,
                         user: await sanitizeUser(user, ctx),
                     })
                 }

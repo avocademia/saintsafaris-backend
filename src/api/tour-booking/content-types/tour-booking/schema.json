@@ -4,7 +4,8 @@
   "info": {
     "singularName": "tour-booking",
     "pluralName": "tour-bookings",
-    "displayName": "Tour Booking"
+    "displayName": "Tour Booking",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -12,22 +13,6 @@
   "pluginOptions": {},
   "attributes": {
     "tour": {
-      "type": "string",
-      "required": true
-    },
-    "first_name": {
-      "type": "string",
-      "required": true
-    },
-    "surname": {
-      "type": "string",
-      "required": true
-    },
-    "phone": {
-      "required": true,
-      "type": "biginteger"
-    },
-    "email": {
       "type": "string",
       "required": true
     },
@@ -47,6 +32,10 @@
     },
     "message": {
       "type": "text"
+    },
+    "user_id": {
+      "type": "biginteger",
+      "required": true
     }
   }
 }

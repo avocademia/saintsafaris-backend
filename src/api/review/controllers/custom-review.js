@@ -1,5 +1,8 @@
 'use strict'
 
+const FetchUser = require('../../../middleware/fetchUser')
+const GetClientIP = require('../../../middleware/getClientIP')
+const Authorization = require('../../../middleware/authorization')
 const validator = require('validator')
 
 module.exports = {
@@ -41,29 +44,45 @@ module.exports = {
     },
 
     async create(ctx) {
-        try {
-            const { body } = ctx.request
 
-            if (body.data.rating > 5){
-                return ctx.throw (400,'invalid rating')
+        const clientIP =  GetClientIP(ctx)
+        const authorized = await Authorization(ctx, clientIP)
+        const user = await FetchUser(ctx)
+
+        if (authorized && user) {
+
+            try {
+                const { body } = ctx.request
+    
+                if (body.data.rating > 5){
+                    return ctx.throw (400,'invalid rating')
+                }
+    
+                const sanitizedData = {
+                   body: validator.escape(body.data.body),
+                   username: validator.escape(body.data.username),
+                   first_name: validator.escape(body.data.first_name),
+                   surname: validator.escape(body.data.surname),
+                   rating: parseInt(body.data.rating),
+                   tourid: parseInt(body.data.tourid)
+                }
+    
+                const res = await strapi.service('api::review.review').create({
+                    data: sanitizedData,
+                })
+    
+                ctx.body = {
+                    review : res,
+                    jwt: authorized
+                }
+                
+            } catch (error) {
+                ctx.throw(500, 'An error occurred while creating a review')
             }
+        }
 
-            const sanitizedData = {
-               body: validator.escape(body.data.body),
-               username: validator.escape(body.data.username),
-               first_name: validator.escape(body.data.first_name),
-               surname: validator.escape(body.data.surname),
-               rating: parseInt(body.data.rating),
-               tourid: parseInt(body.data.tourid)
-            }
-
-            const res = await strapi.service('api::review.review').create({
-                data: sanitizedData,
-            })
-
-            ctx.body = res
-        } catch (error) {
-            ctx.throw(500, 'An error occurred while creating a review')
+        if (!authorized || !user) {
+            ctx.throw(400, 'user not found/unauthorized')
         }
     },
 }

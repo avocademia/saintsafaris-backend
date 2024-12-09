@@ -28,6 +28,10 @@
     "expiration_date": {
       "type": "date",
       "required": true
+    },
+    "ip_address": {
+      "type": "string",
+      "required": true
     }
   }
 }

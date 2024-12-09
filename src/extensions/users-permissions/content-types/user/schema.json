@@ -87,6 +87,10 @@
     "dob": {
       "type": "date",
       "required": true
+    },
+    "phone_number": {
+      "type": "biginteger",
+      "required": true
     }
   }
 }

@@ -12,22 +12,6 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "client_title": {
-      "type": "string",
-      "required": true
-    },
-    "name": {
-      "type": "string",
-      "required": true
-    },
-    "email": {
-      "type": "email",
-      "required": true
-    },
-    "phone_number": {
-      "type": "biginteger",
-      "required": true
-    },
     "adults": {
       "type": "integer",
       "required": true,
@@ -76,6 +60,10 @@
     "visa_assistance": {
       "type": "boolean",
       "default": false
+    },
+    "user_id": {
+      "type": "biginteger",
+      "required": true
     }
   }
 }
