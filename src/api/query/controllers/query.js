@@ -50,10 +50,10 @@ module.exports = {
                     console.error('Error sending notification email:', error)
                 }
 
-                ctx.body = {
-                    status: 'success',
+                ctx.send({
+                    message: 'query sent successfully',
                     jwt: authorized
-                }
+                })
                             
             }
 

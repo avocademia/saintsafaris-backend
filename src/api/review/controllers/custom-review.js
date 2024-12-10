@@ -71,10 +71,10 @@ module.exports = {
                     data: sanitizedData,
                 })
     
-                ctx.body = {
+                ctx.send ({
                     review : res,
                     jwt: authorized
-                }
+                }) 
                 
             } catch (error) {
                 ctx.throw(500, 'An error occurred while creating a review')

@@ -89,10 +89,10 @@ module.exports = {
           console.error('Error sending notification email:', error)
         }
   
-        ctx.body = {
-          status: 'success',
+        ctx.send({
+          message: 'booking successful',
           jwt: authorized
-        }
+        })
       } catch (error) {
         console.error('Error in booking creation:', error.message)
         ctx.throw(500, error.message)

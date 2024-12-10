@@ -51,12 +51,11 @@ module.exports = {
           ctx.throw(400, 'Failed to create booking')
         }
   
-  
-        ctx.body = {
+        ctx.send( {
           message: 'Booking created successfully!',
           bookingId: booking.id,
           jwt: authorized
-        }
+        })
 
         const confirmationMsg = {
           to: user.email,
