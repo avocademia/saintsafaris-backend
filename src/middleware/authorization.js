@@ -42,16 +42,7 @@ const Authorization = async (ctx, clientIP) => {
             { expiresIn: process.env.JWT_SECRET_EXPIRES }
         )
 
-        if (process.env.NODE_ENV === 'production') {
-            ctx.cookies.set("acst", newAccessToken, {
-                httpOnly: true,
-                secure: true,
-                path: '/',
-                maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-                sameSite: 'None',
-            })
-            return true
-        } else {
+        if (newAccessToken) {
             return newAccessToken
         }
     }

@@ -107,16 +107,6 @@ module.exports = (plugin) => {
                         }
                     })
 
-                    if (process.env.NODE_ENV === 'production') {
-                        ctx.cookies.set('acst', accessToken, {
-                            httpOnly: true,
-                            secure: true,
-                            path: '/',
-                            sameSite: 'None',
-                            maxAge: 30*24*60*1000 //30d
-                        })
-                    }
-
                     ctx.send({
                         status: 'Authenticated',
                         jwt: process.env.NODE_ENV === 'production'? 'token availablea': accessToken,
