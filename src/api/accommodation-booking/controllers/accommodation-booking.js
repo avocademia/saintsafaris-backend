@@ -77,7 +77,7 @@ module.exports = {
         const prodCCmail = process.env.PROD_CC_EMAIL
 
         const notificationMsg = {
-          to: 'info@saintsafaris.com',
+          to: 'bookings@saintsafaris.com',
           cc: nodeEnv === 'production'? prodCCmail:devCCmail,
           from: 'no-reply@saintsafaris.com',
           subject: `New Accommodation Booking ID: ${booking.id}`,

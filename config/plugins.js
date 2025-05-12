@@ -20,7 +20,7 @@ module.exports = ({ env }) => ({
         },
         settings: {
           defaultFrom: 'no-reply@saintsafaris.com',
-          defaultReplyTo: 'info@saintsafaris.com',
+          defaultReplyTo: 'customercare@saintsafaris.com',
         },
       }
   },
