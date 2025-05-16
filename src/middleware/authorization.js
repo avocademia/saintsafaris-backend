@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken')
 
 const Authorization = async (ctx, clientIP) => {
     const accessToken = await ctx.cookies.get('acst')
+    console.log('Access Token',accessToken)
 
     if (!accessToken) {
         ctx.throw(401, 'Credentials not provided')

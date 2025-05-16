@@ -93,25 +93,29 @@ module.exports = (plugin) => {
                     ctx.throw(403, 'Invalid identifier or password');
                 } else {
 
-                    accessToken = issueJWT({ id: user.id }, { expiresIn: process.env.JWT_SECRET_EXPIRES })
-                    refreshToken = issueRefreshToken(user.id)
-                    const clientIP = GetClientIP(ctx)
+                    try {
+                        accessToken = issueJWT({ id: user.id }, { expiresIn: process.env.JWT_SECRET_EXPIRES })
+                        refreshToken = issueRefreshToken(user.id)
+                        const clientIP = GetClientIP(ctx)
 
-                    await strapi.query('api::refresh-token.refresh-token').create({
-                        data: {
-                            token: refreshToken,
-                            user_id: user.id,
-                            username: user.username,
-                            expiration_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),//30d
-                            ip_address: clientIP
-                        }
-                    })
+                        await strapi.query('api::refresh-token.refresh-token').create({
+                            data: {
+                                token: refreshToken,
+                                user_id: user.id,
+                                username: user.username,
+                                expiration_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),//30d
+                                ip_address: clientIP
+                            }
+                        })
 
-                    ctx.send({
-                        status: 'Authenticated',
-                        jwt: accessToken,
-                        user: await sanitizeUser(user, ctx),
-                    })
+                        ctx.send({
+                            status: 'Authenticated',
+                            jwt: accessToken,
+                            user: await sanitizeUser(user, ctx),
+                        }) 
+                    } catch (error) {
+                        console.log(error)
+                    } 
                 }
         }
     }
