@@ -109,7 +109,7 @@ module.exports = (plugin) => {
 
                     ctx.send({
                         status: 'Authenticated',
-                        jwt: process.env.NODE_ENV === 'production'? 'token availablea': accessToken,
+                        jwt: accessToken,
                         user: await sanitizeUser(user, ctx),
                     })
                 }
