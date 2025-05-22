@@ -21,6 +21,12 @@ module.exports = ({ env }) => ({
         settings: {
           defaultFrom: 'no-reply@saintsafaris.com',
           defaultReplyTo: 'customercare@saintsafaris.com',
+          confirmation: {
+          url: 'https://api.saintsafaris.com/api/auth/email-confirmation',
+          },
+          resetPassword: {
+            url: 'https://api.saintsafaris.com/api/auth/reset-password',
+          },
         },
       }
   },
